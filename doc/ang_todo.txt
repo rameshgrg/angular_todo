@@ -1,15 +1,120 @@
 12/24
-install nodejs & npm
+	install nodejs & npm
 
-Step 1: Install the Angular CLI
-npm install -g @angular/cli
+	getting started
+		Step 1: Install the Angular CLI
+		npm install -g @angular/cli
 
-Step 2: Create a workspace and initial application
-ng new my-app
+		Step 2: Create a workspace and initial application
+		ng new my-app
 
-Step 3: Serve the application
-cd my-app
-ng serve --open
+		Step 3: Serve the application
+		cd my-app
+		ng serve --open // The --open (or just -o) option automatically opens your browser to http://localhost:4200/.
 
-commands
-ng -v // angular cli version
+	todo
+		prepare array in component
+			var todos = ['todo1', 'todo2']
+		list array in view
+			<li *ngFor="let todo for todos">{{todo}}<li>
+		create click events
+			template
+				<li *ngFor="let todo for todos" (click)="show(todo.id)">{{todo}}<li>
+			component
+				export class AppComponent {
+					show(id){
+						console.log(id);
+					}
+				}
+		add
+		
+	commands
+	ng -v // angular cli version
+
+12/25
+	click events
+
+	template logics
+		ifelse
+			if list 
+				show list 
+			else
+				show no list msg
+
+			view
+				<div *ngIf="isValid; then content else other_content">here is ignored</div>    
+				<ng-template #content>content here...</ng-template>
+				<ng-template #other_content>other content here...</ng-template>
+
+		switch
+			<div [ngSwitch]="thing.name">
+			    <template [ngSwitchCase]="foo">
+			        <div>FOOOOOO</div>
+			    </template>
+			    <template [ngSwitchCase]="bar">
+			        <div>BARRRR</div>
+			    </template>
+			    <template [ngSwitchCase]="cat">
+			        <div>CAT</div>
+			    </template>¯
+			    <template [ngSwitchCase]="dog">
+			        <div>DOG</div>
+			    </template>
+			</div>
+
+	todo
+		show action buttons as per done status
+
+	confusion
+		*ngFor="let item of items | async"
+
+		The async pipe is a special kind of impure pipe that either waits for a promise to resolve to display data or subscribes to an observable to display the emitted values.
+
+	new
+		debug object at template 
+			{{ todos | json }}
+		
+12/26
+	overall todo
+		complete this angular todo
+		ionic todo
+		project requirement
+			mockups 
+			features
+		build apk
+	todo
+		connect with firebase
+		crud
+
+	learned git
+		add localfile git repo to remote
+		git remote -v // list remotes
+		git remote add origin remoteurl // remoteurl might be https://github.com/rameshgrg/kantipur_news_youtube.git
+		// link https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/  
+		git push -u origin master 
+		// -u
+		The -u option does the following: For every branch that is up to date or successfully pushed, add upstream (tracking) reference, used by argument-less git-pull and other commands.
+
+		So, after pushing your local branch with -u option, this local branch will be automatically linked with remote branch, and you can use git pull without any arguments.
+
+12/27
+	overall todo
+		ionic todo
+		build apk
+	todo
+		connect with firebase
+		crud
+12/28
+	overall todo
+		ionic todo
+		build apk
+	todo
+		connect with firebase - done
+		crud
+12/29
+	overall todo
+		ionic todo
+		build apk
+	todo
+		crud
+		angular material
