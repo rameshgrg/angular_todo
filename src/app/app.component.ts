@@ -1,95 +1,76 @@
 import { Component } from '@angular/core';
 
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-// export interface Item { name: string; }
+export interface Todo { name: string; description: string; done: boolean; }
 
 @Component({
-	selector: 'app-root',
-	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.css']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	title = 'Todo App';
+  title = 'Todo App';
 
-  todos: Observable<any[]>;
-  constructor(db: AngularFirestore) {
-    this.todos = db.collection('tasks').valueChanges();
-  }
+  private collection: AngularFirestoreCollection<Todo[]>;
+  todos: Observable<Todo[]>;
+
+  private doc: AngularFirestoreDocument<Todo>;
+  todo: Observable<Todo>;
   
-  todo = {
-      "key" : 0,
-      "description" : "",
-      "done" : 0,
-      "name" : ""
-  };
+  constructor(private afs: AngularFirestore) {
+    this.collection = afs.collection<Todo[]>('tasks');
 
-  todos = [
-      {
-        "key" : 1,
-    		"description" : "description1",
-    		"done" : 0,
-    		"name" : "n1"
-    	},
-      {
-        "key" : 2,
-    		"description" : "description2",
-    		"done" : 1,
-    		"name" : "n2"
-    	},
-      {
-        "key" : 3,
-        "description" : "description3",
-        "done" : 0,
-        "name" : "n3"
+    // crud
+    console.log('crud');
+
+    // create
+    // Persist a document id
+    const id = this.afs.createId();
+    console.log('id', id);
+    const todo: Todo = { 'name': 'name_tes', 'description' : 'description_tes', 'done': 0 };
+    this.collection.doc(id).set(todo);
+    
+    // read
+    // all
+    // this.todos = this.collection.valueChanges();
+    this.todos = this.collection.snapshotChanges().pipe(
+                map(actions => {
+                   return actions.map(a => {
+                     //Get document data
+                     const data = a.payload.doc.data() as Todo[];
+                     //Get document id
+                     data.id = a.payload.doc.id;
+                     return data;
+                   });
+                }));
+
+    // one
+    this.doc = afs.doc<Todo>('tasks/O9KqBizzju6nq7gtjYDD');
+    this.doc.ref.get().then(doc => {
+      if (doc.exists) {
+          const data = doc.data() as Todo;
+          this.todo = data;
+          this.todo.name = "new name";
+
+          // update
+          this.doc.update(this.todo);
+          console.log(this.todo);
+
+          // delete
+          //this.doc.delete(this.todo);
       }
+    });
 
-    ];
+    // update
+    // this.doc.update(this.todo);
 
-  	todo_save(){
-      if(this.todo.key){
-        console.log('update')
-        //this.todos.
-      }else{
-        this.todos.push(this.todo);
-        console.log('add');      
-      }
-      // reset todo
-      this._reset_todo();
-  	}
-
-  	todo_edit(todo){
-      this.todo = todo;
-  	}
-
-  	todo_done(todo){
-      this.todo = todo;
-      this.todo.done = 1;
-      console.log('done: ', this.todo);
-      // reset todo
-      this._reset_todo();
-  	}
-
-  	todo_delete(todo_key){
-      this.todos = this._find(todo_key);
-      // reset todo
-      this._reset_todo();
-  	}
-
-    _find(todo_key){
-      return this.todos.filter(function(currentValue){
-        return currentValue.key != todo_key;
-      },todo_key); 
-    }
-
-    _reset_todo(){
-      this.todo = {
-          "key" : 0,
-          "description" : "",
-          "done" : 0,
-          "name" : ""
-      };
-    }
-
+    // delete
+    // this.doc.delete(this.todo);
   }
+
+
+
+}
