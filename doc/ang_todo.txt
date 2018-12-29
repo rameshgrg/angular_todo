@@ -116,5 +116,5 @@
 		ionic todo
 		build apk
 	todo
-		crud
-		angular material
+		crud - 2
+		angular material - 2
