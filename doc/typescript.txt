@@ -1,0 +1,238 @@
+typescript for angular
+https://codeburst.io/learn-the-basis-of-typescript-to-start-writing-angular-7c5eebf1ba6
+https://scotch.io/tutorials/3-useful-typescript-tips-for-angular
+https://www.typescriptlang.org/docs/handbook/angular.html
+https://programmingwithmosh.com/angular/angular-4-tutorial/
+https://www.tutorialspoint.com/angular4/
+https://tutorialzine.com/2016/07/learn-typescript-in-30-minutes
+https://medium.com/quick-code/top-tutorials-to-learn-typescript-c08834892e69
+https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+
+https://codeburst.io/learn-the-basis-of-typescript-to-start-writing-angular-7c5eebf1ba6
+	basics
+		intro
+			superset of js
+			i.e. provide from feature than js
+			support oop
+			Browsers does not support typescript so we need to transpile our typescript into javascript.
+		installation
+			sudo npm install -g typescript
+		main.ts
+			function log(message) {
+			  console(message);
+			}
+			let message = 'Hello Typescript';
+			log(message); 
+		tsc main.ts
+		node main.js
+
+		types
+			let a: number      //e.g 1, 2, 3
+			let b: boolean     //e.g true, false
+			let c: string      //e.g "abel agoi"
+			let d: any         //this can take any other types
+			let e: number[]    //array of numbers e.g [1, 3, 54]
+			let f: any[]       //any array e.g [1, "abel agoi", true]
+
+		arrow functions
+			let log = (message) => { //we simply remove the function 
+			 console.dir(message);
+			}
+
+			//above can even be shorten to
+			let log = (message) => console.dir(message);
+			
+			//and if you are only passing one parameter, it can be shorten to
+			let log = message => console.dir(message); //not readable though
+
+		interface
+			remove too many function paramater issue
+			interface MyParameters {
+			  a: number,
+			  b: number,
+			  c: string,
+			  d: any,
+			  e: number[],
+			  f: any[]
+			  ...
+			  ...
+			}
+
+			let myFunction = (myParameters: MyParameters) {
+			}
+
+		class
+			class MyPoint {
+			  
+			   x: number;
+			   y: string;
+			   draw() {
+			     //note the way we access the x property below using this
+			     console.log("X is: " + this.x);
+			     console.log("X is: " + this.y);
+			   }
+			   getDistanceBtw(another: AnotherPoint) {
+			    //get distance
+			   }
+			}
+
+		modules
+			export class MyPoint { //note the export keyword added
+			   constructor (private _x?: number, private _y?: string) {}
+			   get x() { 
+			     return this._x;
+			   }
+			   set x(value) { //note the space before the Y
+			     this._x = value;
+			   }
+			   draw() {
+			     //draw something again
+			   }
+			}
+
+			import { MyPoint } from './myPoint'; 
+			class Main {
+			   let MyPoint = new MyPoint(4, "go to go");
+			   MyPoint.draw();   
+			} 
+
+		optional
+			constructor (x?: number, y?: string) { //note the "?" before ":"
+		     this.x = x;
+		     this.y = y;
+		    }
+
+https://scotch.io/tutorials/3-useful-typescript-tips-for-angular
+	namespace : combine multiple modules
+	optional namespace
+		It's quite common where you will use same interface for CRUD. Let's say you have a customer interface, during creation, all fields are mandatory, but during update, all fields are optional. Do you need to create two interfaces to handle this scenario?
+	ignore ts issue
+		if (false) {
+		    // @ts-ignore
+		    console.log('x');
+		}
+
+	#2
+	It's quite common where you will use same interface for CRUD. Let's say you have a customer interface, during creation, all fields are mandatory, but during update, all fields are optional. Do you need to create two interfaces to handle this scenario?
+
+	Here is the interface
+	// api.model.ts
+	export interface Customer {
+	    id: number;
+	    name: string;
+	    age: number;
+	}
+	// using the interface but make all fields optional
+	import { Customer } from './api.model';
+
+	export class MyComponent {
+	    cust: Partial<Customer>;  /
+
+	    ngOninit() {
+	        this.cust = { name: 'jane' }; // no error throw because all fields are optional
+	    }
+	}
+
+https://tutorialzine.com/2016/07/learn-typescript-in-30-minutes
+	1 - function
+	// The function expects a string and an integer.
+	// It doesn't return anything so the type of the function itself is void.
+	function speak(food: string, energy: number): void {
+	  console.log("Our " + food + " has " + energy + " calories.");
+	}
+
+	speak(burger, calories);
+
+	
+	2 - interface
+	interface Food {
+	    name: string;
+	    calories: number;
+	}
+
+	function speak(food: Food): void{
+	  console.log("Our " + food.name + " has " + food.calories + " grams.");
+	}
+
+	// We've made a deliberate mistake and name is misspelled as nmae.
+	var ice_cream = {
+	  nmae: "ice cream", 
+	  calories: 200
+	}
+
+	speak(ice_cream);
+
+	3 - Arrays
+	Arrays - Has two possible syntaxes: my_arr: number[]; or my_arr: Array<number>.
+
+	// To automatically copy it we can call super() - a reference to the parent's constructor.
+    super(item_list, total_pages);
+
+    4 - Generics
+    Generics are templates that allow the same function to accept arguments of various different types.
+	// The <T> after the function name symbolizes that it's a generic function.
+	// When we call the function, every instance of T will be replaced with the actual provided type.
+
+	// Receives one argument of type T,
+	// Returns an array of type T.
+
+	function genericFunc<T>(argument: T): T[] {    
+	  var arrayOfT: T[] = [];    // Create empty array of type T.
+	  arrayOfT.push(argument);   // Push, now arrayOfT = [argument].
+	  return arrayOfT;
+	}
+
+	var arrayFromString = genericFunc<string>("beep");
+	console.log(arrayFromString[0]);         // "beep"
+	console.log(typeof arrayFromString[0])   // String
+
+	var arrayFromNumber = genericFunc(42);
+	console.log(arrayFromNumber[0]);         // 42
+	console.log(typeof arrayFromNumber[0])   // number
+
+	5 - Modules
+	but cannot handle the actual wiring between files. To enable external modules TS relies on third-party libraries: require.js for browser apps and CommonJS for Node.js.
+
+some of syntax doubt from heroapp
+19/12/2018
+researched for confusion
+- this.heroService.getHeroes()
+      .subscribe(heroes => this.heroes = heroes.slice(1, 5));
+  }
+subscribe is the obvser pattern from rjx libary
+mainly for ajax behind the scene
+same like promise and defered in angularjs (v1)
+Subscribe takes 3 methods as parameters each are functions:
+	next: For each item being emitted by the observable perform this function
+	error: If somewhere in the stream an error is found, do this method
+	complete: Once all items are complete from the stream, do this method
+
+- heroes: Hero[] = [];
+
+- @Input() hero: Hero; // hero detail component
+to show data sharing between components
+
+In this example, hero-detail is a child component, it's meant to be inserted into a parent component which will have the 'hero' data, and that 'hero' data will be passed into the hero-detail component via the hero instance variable marked as an input by the @Input decorator.
+
+@Input() hero
+means that hero is a variable that is being passed on to this component from it's parent. e.g.
+<hero-detail [hero]="hero"></hero-detail>
+
+- getHero(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.heroService.getHero(id)
+      .subscribe(hero => this.hero = hero);
+  }
+- heroes$: Observable<Hero[]>;
+returns an Observable of type array's of Hero.
+
+  private searchTerms = new Subject<string>(); // hero seach component
+- delete(hero: Hero): void {
+    this.heroes = this.heroes.filter(h => h !== hero);
+    this.heroService.deleteHero(hero).subscribe();
+  } // heros component
+
+https://www.typescriptlang.org/docs/handbook/decorators.html
+	official doc doubt
+	  new keywords
+	  	enum

@@ -118,3 +118,40 @@
 	todo
 		crud - 2
 		angular material - 2
+12/30
+	overall todo
+		ionic todo
+		build apk
+	todo
+		crud - 2
+		angular material - 2
+		check if ionic is really needed? - done
+			Angular JS is a Web framework. If you intend to use it in a mobile app you will need to embed it in Webview. In order to embed it in a webview you will need to use a hybrid wrapper such as phonegap.
+
+			Apache Cordova is the engine that powers Adobe PhoneGap™, similar to how WebKit powers Chrome or Safari. However, Adobe PhoneGap™ provides additional tools that tie into other Adobe services, including tools like the PhoneGap Developer App, the PhoneGap Desktop App, PhoneGap Build and PhoneGap Enterprise.
+
+			convert html file to mobile app
+				engine is required like Cordova
+			so Cordova convert html into mobile app (hybrid)
+				phonegap is framework on top of Cordova
+				ionic is alos framework on top of Cordova
+			so which to use ionic or phonegap
+				 Phonegap and ionic both use apache cordova to create native containers, but ionic adds ui sugar which phonegap does not (need) to have
+
+				 PhoneGap is perfect for creatinglight apps that don’t rely on the device’s native features.Ionic allows for the rapid and application development at zero costs. The major difference between Ionic and PhoneGap is pricing.
+
+		where is material needed with angular or ionic? - done
+			https://www.youtube.com/watch?v=vPXjbOUergw
+12/31
+	overall todo
+		todo
+			ionic - firebase - materail - 2 + 4 + 4 + 8 = 18
+			events - 4 + 4 = 8
+			routes - 2 + 2 + 2 = 6
+
+		build + deployment
+			build - 16
+			deployment - 16
+
+	todo
+		add events, form and alertbox 

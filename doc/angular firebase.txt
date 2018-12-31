@@ -1,0 +1,232 @@
+links
+	https://github.com/angular/angularfire2
+	https://medium.com/factory-mind/angular-firebase-typescript-step-by-step-tutorial-2ef887fc7d71
+	https://medium.com/factory-mind/angular-cloud-firestore-step-by-step-bootstrap-tutorial-ecb96db8d071
+	https://firebase.google.com/docs/firestore/quickstart
+
+	https://medium.com/@coderonfleek/firebase-firestore-and-angular-todo-list-application-d0fe760f6bca
+	https://angularfirebase.com/lessons/firestore-advanced-usage-angularfire/
+
+	https://stackblitz.com/edit/angular-1iment?file=package.json
+
+	https://medium.com/@pratik_m23/upgrading-angular-4-5-to-angular-6-9babee60cea6
+
+	https://alligator.io/angular/cloud-firestore-angularfire/
+	https://medium.com/@jinalshah999/cloud-fire-store-crud-operation-using-angular-f319bef27ce0
+	https://www.djamware.com/post/5bbf534580aca7466989441c/angular-6-firebase-tutorial-firestore-crud-web-application
+
+12/26
+
+	angularfire2
+		feature
+			authentication
+			realtime bindings
+			upload files
+			push notifications ?
+				send msg to app user / client
+					single user
+					group
+			two db
+				firestone - new, solve complex problem, in beta
+				realtime - old, mature, does not solve complexity
+
+		installation
+			npm install firebase @angular/fire --save
+
+		eg.
+			import at component
+				import { AngularFirestore } from '@angular/fire/firestore';
+				import { Observable } from 'rxjs';
+
+				export class MyApp {
+				  items: Observable<any[]>;
+				  constructor(db: AngularFirestore) {
+				    this.items = db.collection('items').valueChanges();
+				  }
+				}
+
+		getting started
+			prerequisities
+				angular cli
+				npm install @angular/cli
+			install AngularFire and Firebase
+				npm install @angular/fire firebase --save
+			config to environment
+				/src/environments/environment.ts
+				
+				export const environment = {
+				  production: false,
+				  firebase: {
+				    apiKey: '<your-key>',
+				    authDomain: '<your-project-authdomain>',
+				    databaseURL: '<your-database-URL>',
+				    projectId: '<your-project-id>',
+				    storageBucket: '<your-storage-bucket>',
+				    messagingSenderId: '<your-messaging-sender-id>'
+				  }
+				};
+
+			setup @NgModule
+				/src/app/app.module.ts
+
+				import { AngularFireModule } from '@angular/fire';
+				import { environment } from '../environments/environment';
+
+				@NgModule({
+				  imports: [
+				    BrowserModule,
+				    AngularFireModule.initializeApp(environment.firebase)
+				  ],
+				  declarations: [ AppComponent ],
+				  bootstrap: [ AppComponent ]
+				})
+				export class AppModule {}
+
+			other possible modules
+				AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+				AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
+				AngularFireStorageModule // imports firebase/storage only needed for storage features
+
+			inject AngularFirestore at component
+				/src/app/app.component.ts
+
+				export class AppComponent {
+				  items: Observable<any[]>;
+				  constructor(db: AngularFirestore) {
+				    this.items = db.collection('items').valueChanges();
+				  }
+				}			
+
+		documents
+			intro
+				Each document contains a set of key-value pairs
+				same like json object
+
+			AngularFirestoreDocument
+				import at component
+					import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+
+					export interface Item { name: string; }
+				inject at component's constructor
+					export class AppComponent {
+					  private itemDoc: AngularFirestoreDocument<Item>;
+					  item: Observable<Item>;
+					  constructor(private afs: AngularFirestore) {
+					    this.itemDoc = afs.doc<Item>('items/1');
+					    this.item = this.itemDoc.valueChanges();
+					  }
+					  update(item: Item) {
+					    this.itemDoc.update(item);
+					  }
+					}
+			DocumentChangeAction
+				type and palyload
+				type 
+					tells when what DocumentChangeType operation occured (added, modified, removed).
+				payload
+					metadata about the change
+				doc
+					DocumentSnapshot
+			Streaming document data
+				valueChanges()
+						provides only the data
+					when to use
+						list data or readonly
+				snapshotChanges()
+						document change action
+					when to use
+						list data with metadata
+			Manipulating documents
+				set(data: T) - Destructively updates a document's data.
+				update(data: T) - Non-destructively updates a document's data.
+				delete() - Deletes an entire document. Does not delete any nested collections.		
+		collection
+			group of documents
+
+			AngularFirestoreCollection
+				wrapper for collection
+		
+			import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';	
+
+			export class AppComponent {
+			  private itemsCollection: AngularFirestoreCollection<Item>;
+			  items: Observable<Item[]>;
+			  constructor(private afs: AngularFirestore) {
+			    this.itemsCollection = afs.collection<Item>('items');
+			    this.items = this.itemsCollection.valueChanges();
+			  }
+			  addItem(item: Item) {
+			    this.itemsCollection.add(item);
+			  }
+			}
+
+			valueChanges()
+			Best practices - Use this method to display data on a page. It's simple but effective. Use .snapshotChanges() once your needs become more complex.
+
+			export interface Item { id: string; name: string; }
+			export class AppComponent {
+			  private itemsCollection: AngularFirestoreCollection<Item>;
+			  items: Observable<Item[]>;
+			  constructor(private readonly afs: AngularFirestore) {
+			    this.itemsCollection = afs.collection<Item>('items');
+			    // .valueChanges() is simple. It just returns the 
+			    // JSON data without metadata. If you need the 
+			    // doc.id() in the value you must persist it your self
+			    // or use .snapshotChanges() instead. See the addItem()
+			    // method below for how to persist the id with
+			    // valueChanges()
+			    this.items = this.itemsCollection.valueChanges();
+			  }
+			  addItem(name: string) {
+			    // Persist a document id
+			    const id = this.afs.createId();
+			    const item: Item = { id, name };
+			    this.itemsCollection.doc(id).set(item);
+			  }
+			}
+
+			snapshotChanges()
+			When you need a more complex data structure than an array or if you need to process changes as they occur. This array is synchronized with the remote and local changes in Firestore.
+
+12/27
+	collection
+			// .snapshotChanges() returns a DocumentChangeAction[], which contains
+			// a lot of information about "what happened" with each change. If you want to
+			// get the data and the id use the map operator.
+
+		stateChanges()
+			Returns an Observable of the most recent changes as a DocumentChangeAction[]
+
+		auditTrail()
+			Similar to stateChanges(), but instead it keeps around the trail of events as an array.
+			This is useful for ngrx integrations where you need to replay the entire state of an application. This also works as a great debugging tool for all applications. You can simple write afs.collection('items').auditTrail().subscribe(console.log) and check the events in the console as they occur.
+
+		Limiting events
+			constructor(private afs: AngularFirestore): {
+			    this.itemsCollection = afs.collection<Item>('items');
+			    this.items = this.itemsCollection.snapshotChanges(['added', 'removed']);
+			}
+
+		State based vs. action based ?
+
+		Adding documents to a collection
+			constructor(private afs: AngularFirestore): {
+			    const shirtsCollection = afs.collection<Item>('tshirts');
+			    shirtsCollection.add({ name: 'item', price: 10 });
+			}
+
+		Manipulating individual documents
+			To retrieve, update, or delete an individual document you can use the doc() method. This method returns an AngularFirestoreDocument, which provides methods for streaming, updating, and deleting. See Using Documents with AngularFirestore for more information on how to use documents.
+
+		querying colleciton
+			afs.collection('items', ref => ref.where('size', '==', 'large'))
+
+		Dynamic querying
+			?
+12/28
+	@firebase2 managed by @angular/fire
+	require nodejs 8 and angular 6
+12/29
+	crud
+		
+	
