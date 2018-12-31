@@ -121,8 +121,10 @@ export class AppComponent {
 
   on_delete(id: String) {
       console.log('on_delete', id);
-      this.doc = this.afs.doc<Todo>('tasks/'+id);
-      this.doc.delete(this.todo);
+      if(confirm("Are you sure to delete "+name)) {
+        this.doc = this.afs.doc<Todo>('tasks/'+id);
+        this.doc.delete(this.todo);
+      }
   }
 
   _reset_todo(){
