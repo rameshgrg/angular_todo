@@ -22,11 +22,11 @@ export class AppComponent {
 
   todo = {
     'id': '',
-    'name' : '',
-    'description' : '',
-    'done' : 0
+    'name': '',
+    'description': '',
+    'done': 0
   };
-  
+
   constructor(private afs: AngularFirestore) {
     this.collection = afs.collection('tasks');
 
@@ -94,11 +94,11 @@ export class AppComponent {
 
   on_save(todo) {
     console.log('on_save', todo);
-    if(todo.id){
+    if (todo.id) {
       console.log('update')
-      this.doc = this.afs.doc<Todo>('tasks/'+this.todo.id);
+      this.doc = this.afs.doc<Todo>('tasks/' + this.todo.id);
       this.doc.update(this.todo);
-    }else{
+    } else {
       console.log('create')
       const id = this.afs.createId();
       this.collection.doc(id).set(todo);
@@ -115,24 +115,24 @@ export class AppComponent {
   on_done(id: String, todo) {
     console.log('on_done', id);
     todo.done = 1;
-    this.doc = this.afs.doc<Todo>('tasks/'+id);
+    this.doc = this.afs.doc<Todo>('tasks/' + id);
     this.doc.update(todo);
   }
 
   on_delete(id: String) {
-      console.log('on_delete', id);
-      if(confirm("Are you sure to delete "+name)) {
-        this.doc = this.afs.doc<Todo>('tasks/'+id);
-        this.doc.delete(this.todo);
-      }
+    console.log('on_delete', id);
+    if (confirm("Are you sure to delete " + name)) {
+      this.doc = this.afs.doc<Todo>('tasks/' + id);
+      this.doc.delete(this.todo);
+    }
   }
 
-  _reset_todo(){
+  _reset_todo() {
     this.todo = {
-        "id" : 0,
-        "name" : "",
-        "description" : "",
-        "done" : 0,
+      "id": 0,
+      "name": "",
+      "description": "",
+      "done": 0,
     };
 
   }
