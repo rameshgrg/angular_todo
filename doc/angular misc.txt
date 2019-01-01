@@ -1,0 +1,29 @@
+1/1
+    routes
+        create route file (module) at app/
+            ng generate module app-routing --flat --module=app
+                --flat puts the file in src/app instead of its own folder.
+                --module=app tells the CLI to register it in the imports array of the AppModule.
+            src/app/app-routing.module.ts
+                import { NgModule }             from '@angular/core';
+                import { RouterModule, Routes } from '@angular/router';
+
+                @NgModule({
+                    imports: [ RouterModule.forRoot(routes) ],
+                    exports: [ RouterModule ]
+                })
+                export class AppRoutingModule {}
+
+        import component, Add a default route, define routes (app-routing.module.ts)
+            import { HeroesComponent }      from './heroes/heroes.component';
+
+            const routes: Routes = [
+                { path: 'heroes', component: HeroesComponent }
+            ];
+        add routeroutlet at main app view
+            <router-outlet></router-outlet>
+        add navigation link (routerlink) at view
+            <nav>
+                <a routerLink="/heroes">Heroes</a>
+            </nav>
+            <router-outlet></router-outlet>

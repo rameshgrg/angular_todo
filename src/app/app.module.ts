@@ -11,17 +11,23 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
 
+import { TodoComponent } from './todo.component';
+import { PageComponent } from './page/page.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TodoComponent,
+    PageComponent,
   ],
   imports: [
     BrowserModule, 
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AppRoutingModule
 	],
   providers: [],
   bootstrap: [AppComponent]
