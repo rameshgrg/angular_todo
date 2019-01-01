@@ -155,3 +155,28 @@
 
 	todo
 		add events, form and alertbox 
+			add events - done
+			form validation - done
+			alertbox - done (simple js confirm)
+		form 
+			https://console.firebase.google.com/u/0/project/todo-d640e/database/firestore/data~2Ftasks~2F8K9vzv41YdYWgLAgrzZb
+
+			https://medium.com/@jinalshah999/cloud-fire-store-crud-operation-using-angular-f319bef27ce0
+			https://medium.com/@coderonfleek/firebase-firestore-and-angular-todo-list-application-d0fe760f6bca
+
+			https://www.djamware.com/post/5bbf534580aca7466989441c/angular-6-firebase-tutorial-firestore-crud-web-application
+			https://alligator.io/angular/cloud-firestore-angularfire/
+			https://medium.com/avocoders/getting-started-with-angularfirestore-1a2cef8aa394
+1/1		
+	overall todo
+		todo
+			ionic - firebase - materail - 2 + 4 + 4 + 8 = 18
+			routes - 2 + 2 + 2 = 6
+
+		build + deployment
+			build - 16
+			deployment - 16
+
+	todo
+		routes - 1
+		ionic - firebase - 2 + 4 + 4 + 8 = 18
